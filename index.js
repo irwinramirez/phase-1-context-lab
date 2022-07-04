@@ -9,6 +9,57 @@
  for you to use if you need it!
  */
 
+function createEmployeeRecord (arr){
+    return {
+        firstName: arr[0],
+        familyName: arr[1],
+        title: arr[2],
+        payPerHour: arr[3],
+        timeInEvents: [],
+        timeOutEvents: []
+    }
+}
+
+function createEmployeeRecords(arr){
+    return arr.map(record => createEmployeeRecord(record))
+}
+
+function createTimeInEvent(dateStamp){
+    // console.log(date)
+    let [date, hour] = dateStamp.split(' ')
+
+     this.timeInEvents.push({
+         type: "TimeIn",
+         hour: parseInt(hour, 10),
+         date,
+     })
+
+     return this
+}
+
+function createTimeOutEvent(dateStamp){
+    let [date, hour] = dateStamp.split(' ')
+
+     this.timeOutEvents.push({
+         type: "TimeOut",
+         hour: parseInt(hour, 10),
+         date,
+     })
+
+     return this
+}
+function hoursWorkedOnDate(dateStamp){
+    // console.log("dateStamp", dateStamp)
+    const timeIn = this.timeInEvents.find(event => event.date === dateStamp)
+    const timeOut = this.timeOutEvents.find(event => event.date === dateStamp)
+    return (timeOut.hour - timeIn.hour)/100
+}
+function wagesEarnedOnDate(dateStamp){
+    const hours = hoursWorkedOnDate.call(this, dateStamp)
+    return this.payPerHour * hours
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////
 const allWagesFor = function () {
     const eligibleDates = this.timeInEvents.map(function (e) {
         return e.date
@@ -19,5 +70,15 @@ const allWagesFor = function () {
     }.bind(this), 0) // <== Hm, why did we need to add bind() there? We'll discuss soon!
 
     return payable
+}
+function findEmployeeByFirstName(arr, firstN){
+    return arr.find(arr => arr.firstName === firstN)
+    
+}
+
+function calculatePayroll(arr){
+    const record = arr.map(arr => allWagesFor.call(arr))
+    return record.reduce((currentValue, total) => currentValue + total)
+
 }
 
